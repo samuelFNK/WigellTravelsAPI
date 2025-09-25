@@ -1,9 +1,9 @@
 package com.GroupAssignment.WigellTravelsAPI.repositories;
 
-import com.GroupAssignment.WigellTravelsAPI.entities.Booking;
+import com.GroupAssignment.WigellTravelsAPI.entities.TravelBooking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Long> {
+public interface TravelBookingRepository extends JpaRepository<TravelBooking, Long> {
 }

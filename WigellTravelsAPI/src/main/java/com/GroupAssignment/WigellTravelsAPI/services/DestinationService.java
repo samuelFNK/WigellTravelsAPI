@@ -2,9 +2,7 @@ package com.GroupAssignment.WigellTravelsAPI.services;
 
 import com.GroupAssignment.WigellTravelsAPI.entities.Destination;
 import com.GroupAssignment.WigellTravelsAPI.repositories.DestinationRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +17,6 @@ public class DestinationService implements DestinationServiceInterface{
 
     @Override
     public List<Destination> getAllDestinations(){
-
         return destinationRepository.findAll();
     }
 

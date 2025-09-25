@@ -9,7 +9,7 @@ import org.springframework.lang.NonNull;
 import java.math.BigDecimal;
 
 @Entity
-public class Booking {
+public class TravelBooking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
