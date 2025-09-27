@@ -1,12 +1,11 @@
 package com.GroupAssignment.WigellTravelsAPI.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class TravelBooking {
@@ -26,6 +25,19 @@ public class TravelBooking {
 
     @NonNull
     private String hotelName;
+
+    @ManyToOne
+    @JoinColumn(name = "destination_id", nullable = false)
+    private Destination destination;
+
+    @ManyToMany
+    @JoinTable(
+            name = "booking_customer",
+            joinColumns = @JoinColumn(name = "booking_id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id")
+    )
+    private List<Customer> customers = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -80,17 +92,12 @@ public class TravelBooking {
     }
 
     @NonNull
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(@NonNull Customer customer) {
-        this.customer = customer;
+    public List<Customer> getCustomers() {
+        return customers;
     }
 
     @NonNull
-    private Destination destination;
-
-    @NonNull
-    private Customer customer;
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
 }

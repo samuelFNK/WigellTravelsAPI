@@ -1,10 +1,10 @@
 package com.GroupAssignment.WigellTravelsAPI.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -21,6 +21,17 @@ public class Customer {
 
     @NonNull
     private String password;
+
+    @ManyToMany(mappedBy = "customers")
+    private List<TravelBooking> bookings = new ArrayList<>();
+
+    public List<TravelBooking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<TravelBooking> bookings) {
+        this.bookings = bookings;
+    }
 
     public Long getId() {
         return id;
