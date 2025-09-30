@@ -16,7 +16,7 @@ public class DestinationController {
         this.destinationService = destinationService;
     }
 
-    @GetMapping("/travels?")
+    @GetMapping("/travelsss")
     public List<Destination> getAllDestinations() {
         return destinationService.getAllDestinations();
     }
