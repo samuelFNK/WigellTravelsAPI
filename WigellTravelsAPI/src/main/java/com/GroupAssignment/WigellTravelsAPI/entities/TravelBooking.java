@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,13 +20,16 @@ public class TravelBooking {
     private BigDecimal totalPrice;
 
     @NonNull
-    private String departureDate;
+    private LocalDate departureDate;
 
     @NonNull
     private int durationWeeks;
 
     @NonNull
     private String hotelName;
+
+    @NonNull
+    private boolean currentlyActive;
 
     @ManyToOne
     @JoinColumn(name = "destination_id", nullable = false)
@@ -39,10 +44,12 @@ public class TravelBooking {
     private List<Customer> customers = new ArrayList<>();
 
 
+    @NonNull
     public Long getId() {
         return id;
     }
 
+    @NonNull
     public void setId(Long id) {
         this.id = id;
     }
@@ -57,18 +64,20 @@ public class TravelBooking {
     }
 
     @NonNull
-    public String getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(@NonNull String departureDate) {
+    public void setDepartureDate(@NonNull LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
+    @NonNull
     public int getDurationWeeks() {
         return durationWeeks;
     }
 
+    @NonNull
     public void setDurationWeeks(int durationWeeks) {
         this.durationWeeks = durationWeeks;
     }
@@ -99,5 +108,15 @@ public class TravelBooking {
     @NonNull
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
+    }
+
+    @NonNull
+    public boolean isCurrentlyActive() {
+        return currentlyActive;
+    }
+
+    @NonNull
+    public void setCurrentlyActive(boolean currentlyActive) {
+        this.currentlyActive = currentlyActive;
     }
 }
