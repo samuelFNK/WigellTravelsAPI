@@ -20,6 +20,9 @@ public class TravelBooking {
     private BigDecimal totalPrice;
 
     @NonNull
+    private BigDecimal totalPriceEuro;
+
+    @NonNull
     private LocalDate departureDate;
 
     @NonNull
@@ -31,11 +34,11 @@ public class TravelBooking {
     @NonNull
     private boolean currentlyActive;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "destination_id", nullable = false)
     private Destination destination;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "booking_customer",
             joinColumns = @JoinColumn(name = "booking_id"),
@@ -61,6 +64,15 @@ public class TravelBooking {
 
     public void setTotalPrice(@NonNull BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    @NonNull
+    public BigDecimal getTotalPriceEuro() {
+        return totalPriceEuro;
+    }
+
+    public void setTotalPriceEuro(@NonNull BigDecimal totalPriceEuro) {
+        this.totalPriceEuro = totalPriceEuro;
     }
 
     @NonNull

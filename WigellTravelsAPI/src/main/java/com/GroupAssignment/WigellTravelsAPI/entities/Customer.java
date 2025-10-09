@@ -1,5 +1,6 @@
 package com.GroupAssignment.WigellTravelsAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
@@ -22,7 +23,8 @@ public class Customer {
     @NonNull
     private String password;
 
-    @ManyToMany(mappedBy = "customers")
+    @ManyToMany(mappedBy = "customers", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<TravelBooking> bookings = new ArrayList<>();
 
     public List<TravelBooking> getBookings() {

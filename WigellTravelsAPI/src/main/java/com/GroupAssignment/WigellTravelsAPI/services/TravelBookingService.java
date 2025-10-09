@@ -7,6 +7,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Date;
@@ -16,9 +18,11 @@ import java.util.List;
 public class TravelBookingService implements TravelBookingServiceInterface {
 
     private final TravelBookingRepository travelBookingRepository;
+    private final CurrencyConverterService currencyConverterService;
 
-    public TravelBookingService(TravelBookingRepository travelBookingRepository){
+    public TravelBookingService(TravelBookingRepository travelBookingRepository, CurrencyConverterService currencyConverterService){
         this.travelBookingRepository = travelBookingRepository;
+        this.currencyConverterService = currencyConverterService;
     }
 
     @Override
@@ -52,7 +56,28 @@ public class TravelBookingService implements TravelBookingServiceInterface {
     @Override
     public TravelBooking postBooking(Principal principal, TravelBooking travelBooking) {
 
-        return null;
+        boolean customerAlreadyAdded = false;
+        for (Customer customer : travelBooking.getCustomers()){
+            if (customer.getUsername().equalsIgnoreCase(principal.getName())){
+                customerAlreadyAdded = true;
+                break;
+            }
+        }
+
+        if (!customerAlreadyAdded){
+            Customer newCustomer = new Customer();
+            newCustomer.setUsername(principal.getName());
+            newCustomer.setPassword(principal.getName());
+            newCustomer.setLastName("temp.");
+
+            travelBooking.getCustomers().add(newCustomer);
+        }
+
+        travelBooking.setCurrentlyActive(true);
+        travelBooking.setTotalPrice(BigDecimal.valueOf(travelBooking.getHotelName().length() * 100).setScale(2, RoundingMode.HALF_UP));
+        travelBooking.setTotalPriceEuro(currencyConverterService.convertSekToEuro(travelBooking.getTotalPrice()));
+
+        return travelBookingRepository.save(travelBooking);
     }
 
     @Override
