@@ -3,7 +3,6 @@ package com.GroupAssignment.WigellTravelsAPI.controllers;
 import com.GroupAssignment.WigellTravelsAPI.entities.TravelBooking;
 import com.GroupAssignment.WigellTravelsAPI.services.CurrencyConverterService;
 import com.GroupAssignment.WigellTravelsAPI.services.TravelBookingService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -22,7 +21,7 @@ public class TravelBookingController {
         this.currencyConverterService = currencyConverterService;
     }
 
-    @GetMapping("bookings")
+    @GetMapping("/bookings")
     public List<TravelBooking> getAllBookings(){
         List<TravelBooking> bookings = travelBookingService.getAllAvailableBookings();
 
@@ -34,7 +33,7 @@ public class TravelBookingController {
         return bookings;
     }
 
-    @GetMapping("mybookings")
+    @GetMapping("/mybookings")
     public List<TravelBooking> getAllCallerBookings(Principal principal){
 
         List<TravelBooking> bookings = travelBookingService.getCallerBookingHistory(principal);
@@ -45,6 +44,21 @@ public class TravelBookingController {
         });
 
         return bookings;
+    }
+
+    @GetMapping("/listupcoming")
+    public List<TravelBooking> getAllUpcomingBookings(){
+        return travelBookingService.getAllScheduledBookings();
+    }
+
+    @GetMapping("/listcanceled")
+    public List<TravelBooking> getAllCanceledBookings(){
+        return travelBookingService.getAllCanceledBookings();
+    }
+
+    @GetMapping("/listpast")
+    public List<TravelBooking> getAllPastBookings(){
+        return travelBookingService.getEntireBookingHistory();
     }
 
     @PostMapping("/booktrip")
