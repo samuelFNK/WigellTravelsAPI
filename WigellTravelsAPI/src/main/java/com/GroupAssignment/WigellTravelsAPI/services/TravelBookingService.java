@@ -6,6 +6,8 @@ import com.GroupAssignment.WigellTravelsAPI.repositories.TravelBookingRepository
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,11 +16,13 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
 public class TravelBookingService implements TravelBookingServiceInterface {
 
     private final TravelBookingRepository travelBookingRepository;
     private final CurrencyConverterService currencyConverterService;
+    private static final Logger logger = LogManager.getLogger(TravelBookingService.class);
 
     public TravelBookingService(TravelBookingRepository travelBookingRepository, CurrencyConverterService currencyConverterService){
         this.travelBookingRepository = travelBookingRepository;
@@ -27,6 +31,7 @@ public class TravelBookingService implements TravelBookingServiceInterface {
 
     @Override
     public List<TravelBooking> getAllAvailableBookings() {
+        logger.info("Returning all available travel bookings.");
         return travelBookingRepository.findAll();
     }
 
