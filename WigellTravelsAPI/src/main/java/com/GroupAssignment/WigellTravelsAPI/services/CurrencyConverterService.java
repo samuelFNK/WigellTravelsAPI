@@ -24,7 +24,7 @@ public class CurrencyConverterService {
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             Object ratesObj = response.getBody().get("rates");
             if (!(ratesObj instanceof Map)) {
-                throw new RuntimeException("Currency conversion failed: 'rates' missing or malformed");
+                throw new RuntimeException("Currency conversion failed: 'rates' missing");
             }
 
             Map<String, Object> rates = (Map<String, Object>) ratesObj;
@@ -40,36 +40,5 @@ public class CurrencyConverterService {
             throw new RuntimeException("Currency conversion failed: bad response");
         }
     }
-
-
-
-
-
-
-
-    /*
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    public BigDecimal convertSekToEuro(BigDecimal amountSek){
-        String url = "https://open.er-api.com/v6/latest/SEK" + amountSek;
-        ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
-
-        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null){
-            System.out.println("AAAAAAAAAH  " + response.getBody());
-            Object result = response.getBody().get("result");
-            if (result != null){
-                return new BigDecimal(result.toString());
-            }
-            else {
-                throw new RuntimeException("Currency conversion failed: result is null.");
-            }
-        }
-        else {
-            throw new RuntimeException("Currency conversion failed: bad response.");
-        }
-    }
-
-     */
 
 }

@@ -21,7 +21,19 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/travels").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/wigelltravels/v1/booktrip").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/wigelltravels/v1/canceltrip").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/wigelltravels/v1/mybookings").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/wigelltravels/v1/listcanceled").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/listupcoming").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/listpast").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/addtravel").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/updatetravel").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/addtravel").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/addtravel").hasRole("ADMIN")
+                        .requestMatchers("/api/wigelltravels/v1/removetravel/{id}").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic.realmName("WigellTravels API"));
