@@ -38,23 +38,26 @@ public class TravelBookingService implements TravelBookingServiceInterface {
     @Override
     public List<TravelBooking> getCallerBookingHistory(Principal principal) {
         String principalName = principal.getName();
-
+        logger.info("Returning caller travel booking history.");
         return travelBookingRepository.findByCustomers_Username(principalName);
     }
 
     @Override
     public List<TravelBooking> getAllCanceledBookings() {
+        logger.info("Returning all canceled travel bookings.");
         return travelBookingRepository.findByCurrentlyActive(false);
     }
 
     @Override
     public List<TravelBooking> getAllScheduledBookings() {
+        logger.info("Returning all scheduled bookings.");
         return travelBookingRepository.findByCurrentlyActive(true);
     }
 
     @Override
     public List<TravelBooking> getEntireBookingHistory() {
         Date currentDate = new Date();
+        logger.info("Returning all bookings made before: " + currentDate);
         return travelBookingRepository.findByDepartureDateLessThanEqual(currentDate);
     }
 
@@ -82,6 +85,7 @@ public class TravelBookingService implements TravelBookingServiceInterface {
         travelBooking.setTotalPrice(BigDecimal.valueOf(travelBooking.getHotelName().length() * 100).setScale(2, RoundingMode.HALF_UP));
         travelBooking.setTotalPriceEuro(currencyConverterService.convertSekToEuro(travelBooking.getTotalPrice()));
 
+        logger.info("New travel booking posted to the database.");
         return travelBookingRepository.save(travelBooking);
     }
 
@@ -101,18 +105,21 @@ public class TravelBookingService implements TravelBookingServiceInterface {
         }
 
         if (!authorityConfirmed){
-            throw new AccessDeniedException("The current user is not authorized to cancel thie entered booking id: '" + travelBookingId + "'.");
+            logger.warn("Travel booking cancellation failed due to caller not having authority.");
+            throw new AccessDeniedException("The current user is not authorized to cancel this entered booking id: '" + travelBookingId + "'.");
         }
 
 
         LocalDate currentDate = LocalDate.now();
         LocalDate oneWeekFromCurrentDate = currentDate.plusWeeks(1);
         if (selectedBooking.getDepartureDate().isBefore(oneWeekFromCurrentDate)){
+            logger.warn("Travel booking cancellation failed due to it being less than 1 weeks to departure.");
             throw new IllegalStateException("You are not allowed to cancel bookings within a weeks notice of departure. The selected booking departs: '" + selectedBooking.getDepartureDate() + "'.");
         }
 
         selectedBooking.setCurrentlyActive(false);
 
+        logger.info("Travel booking with id: " + travelBookingId + " was successfully cancelled.");
         return travelBookingRepository.save(selectedBooking);
     }
 }
