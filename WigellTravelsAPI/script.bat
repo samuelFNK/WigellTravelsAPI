@@ -1,14 +1,14 @@
 @echo off
-echo Stopping microservice-a
-docker stop microservice-a
-echo Deleting container microservice-a
-docker rm microservice-a
-echo Deleting image microservice-a
-docker rmi microservice-a
+echo Stopping wigell-travels
+docker stop wigell-travels
+echo Deleting container wigell-travels
+docker rm wigell-travels
+echo Deleting image wigell-travels
+docker rmi wigell-travels
 echo Running mvn package
 call mvn package
-echo Creating image microservice-a
-docker build -t microservice-a .
-echo Creating and running container microservice-a
-docker run -d -p 9900:9900 --name microservice-a --network services-network microservice-a
+echo Creating image wigell-travels
+docker build -t wigell-travels .
+echo Creating and running container wigell-travels
+docker run -d -p 8585:8585 --name wigell-travels --network wigell-network wigell-travels
 echo Done!
